@@ -1,0 +1,39 @@
+services:
+  server:
+    image: 
+    container_name:
+    ports:
+     - 8080:8080
+    secrets:
+     - db-password
+    environment:
+     - POSTGRES_HOST-db
+     - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+     - POSTGRES_USER=postgres
+     - POSTGRES_DB=
+     - POSTGRES_PORT-5432
+     - POSTGRES_SSLMODE=disable
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres
+    restart: always
+    user: postgres
+    secrets:
+     - db-password
+    environment:
+     - POSTGRES_DB=
+     - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    expose:
+     - 5432
+    healthcheck:
+      test: ["CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  db-data:
+secrets:
+  db-password:
+        file: db/password.txt
