@@ -11,6 +11,8 @@ services:
      - /var/run/docker.sock:/var/run/docker.sock
   server:
     image: 
+    labels:
+      - "traefik.http.routers.shoptube.rule=Host(
     container_name:
     secrets:
      - db-password
