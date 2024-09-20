@@ -12,7 +12,7 @@ services:
   server:
     image: 
     labels:
-      - "traefik.http.routers.shoptube.rule=Host(
+      - "traefik.http.routers.shoptube.rule=Host(`shoptube.shop`)"
     container_name:
     secrets:
      - db-password
